@@ -58,9 +58,10 @@ const TodoList = ({ mainList, setMainList, deleteTodo, editTodo, toggleMode }) =
                           <Checkbox edge="start" tabIndex={-1} disableRipple />
                         </ListItemIcon>
                         {item.isEdit ? (
-                          <Input autoFocus onChange={(event) => editTodo(i, 'text', event)}>
-                            {item.text}
-                          </Input>
+                          <Input
+                            autoFocus
+                            onChange={(event) => editTodo(i, 'text', event)}
+                            value={item.text}></Input>
                         ) : (
                           <ListItemText primary={item.text}>{item.text}</ListItemText>
                         )}
