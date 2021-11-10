@@ -11,9 +11,11 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import Input from '@mui/material/Input';
 import styles from './TodoList.module.scss';
 
-const TodoList = ({ mainList, deleteTodo }) => {
+const TodoList = ({ mainList, setMainList, deleteTodo, editTodo, toggleMode }) => {
   return (
     <Card sx={{ maxWidth: 500 }} className={styles.card}>
       <CardContent>
@@ -33,8 +35,12 @@ const TodoList = ({ mainList, deleteTodo }) => {
                       className={styles.itemText}
                       secondaryAction={
                         <>
-                          <IconButton edge="end" aria-label="edit" className={styles.editBtn}>
-                            <EditIcon />
+                          <IconButton
+                            edge="end"
+                            aria-label="edit"
+                            className={styles.editBtn}
+                            onClick={() => toggleMode(i)}>
+                            {item.isEdit ? <SaveIcon /> : <EditIcon />}
                           </IconButton>
                           <IconButton
                             edge="end"
@@ -51,8 +57,13 @@ const TodoList = ({ mainList, deleteTodo }) => {
                         <ListItemIcon>
                           <Checkbox edge="start" tabIndex={-1} disableRipple />
                         </ListItemIcon>
-
-                        <ListItemText primary={item}>{item}</ListItemText>
+                        {item.isEdit ? (
+                          <Input autoFocus onChange={(event) => editTodo(i, 'text', event)}>
+                            {item.text}
+                          </Input>
+                        ) : (
+                          <ListItemText primary={item.text}>{item.text}</ListItemText>
+                        )}
                       </ListItemButton>
                     </ListItem>
                   </List>

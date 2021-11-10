@@ -7,23 +7,19 @@ import Button from '@mui/material/Button';
 import styles from './Form.module.scss';
 
 const Form = ({ onShow }) => {
-  const [todo, setTodo] = React.useState([]);
-  const [field, setField] = React.useState([]);
+  const [field, setField] = React.useState({ text: '', isEdit: false });
 
   const onChangeInput = (e) => {
-    const { value } = e.target;
-    setField(value);
+    const { name, value } = e.target;
+    setField({ ...field, [name]: value, isEdit: false });
   };
 
   const handleClickAdd = () => {
-    setTodo([...todo, field]);
-
     if (onShow) {
-      onShow([...todo, field]);
+      onShow(field);
     }
 
-    setField([]);
-    setTodo([]);
+    setField({ text: '', isEdit: false });
   };
 
   return (
@@ -40,7 +36,8 @@ const Form = ({ onShow }) => {
           <TextField
             required
             id="outlined-required"
-            value={field}
+            value={field.text}
+            name="text"
             onChange={onChangeInput}
             placeholder="Введите задачу"
             className={styles.textfield}

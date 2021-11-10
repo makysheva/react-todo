@@ -8,13 +8,37 @@ import CardContent from '@mui/material/CardContent';
 const App = () => {
   const [mainList, setMainList] = React.useState([]);
 
-  const onShowTodo = (arr) => {
-    setMainList([...mainList, arr]);
+  const onShowTodo = (obj) => {
+    setMainList([...mainList, obj]);
   };
 
   const deleteTodo = (todoIndex) => {
     const newTodo = mainList.filter((_, index) => index !== todoIndex);
     setMainList(newTodo);
+  };
+
+  const editTodo = (i, field, event) => {
+    setMainList(
+      mainList.map((todo, index) => {
+        if (index === i) {
+          todo[field] = event.target.value;
+        }
+
+        return todo;
+      }),
+    );
+  };
+
+  const toggleMode = (i) => {
+    setMainList(
+      mainList.map((todo, index) => {
+        if (index === i) {
+          todo.isEdit = !todo.isEdit;
+        }
+
+        return todo;
+      }),
+    );
   };
 
   return (
@@ -27,7 +51,13 @@ const App = () => {
 
         <div className={styles.container}>
           <h2>Задачи</h2>
-          <TodoList mainList={mainList} deleteTodo={deleteTodo} />
+          <TodoList
+            mainList={mainList}
+            setMainList={setMainList}
+            deleteTodo={deleteTodo}
+            editTodo={editTodo}
+            toggleMode={toggleMode}
+          />
         </div>
       </CardContent>
     </Card>
