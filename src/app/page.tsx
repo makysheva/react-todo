@@ -9,20 +9,15 @@ import {Filter} from "../components/Filter";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import {TasksProps} from "@/redux/tasks/types";
-import {useAppDispatch, useAppSelector} from "@/redux/hooks";
 
 export default function HomePage() {
-    const [mainList, setMainList] = React.useState<TasksProps[]>([]);
+    // const [mainList, setMainList] = React.useState<TasksProps[]>([]);
     const [filter, setFilter] = React.useState("all");
     const [theme, setTheme] = React.useState('light');
-    const dispatch = useAppDispatch()
-    const tasks = useAppSelector((state) => state.tasks);
 
-    const onShowTodo = (obj: TasksProps) => {
-        setMainList([...mainList, obj]);
-    };
-
-    // const filteredTasks = filterTasks(tasks, filter);
+    // const onShowTodo = (obj: TasksProps) => {
+    //     setMainList([...mainList, obj]);
+    // };
 
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');
@@ -37,7 +32,7 @@ export default function HomePage() {
                         {theme === 'light' ? <DarkModeIcon onClick={toggleTheme}/> :
                             <WbSunnyIcon onClick={toggleTheme}/>}
                     </div>
-                    <Form onShow={onShowTodo}/>
+                    <Form />
                 </div>
 
                 <div className={"m-2 p-2.5"}>

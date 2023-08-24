@@ -6,18 +6,20 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {TasksProps} from "@/redux/tasks/types";
-import {addTask} from "@/redux/tasks/slice";
-import {useAppDispatch} from "@/redux/hooks";
+import { TasksProps } from "@/redux/tasks/types";
+import { addTask } from "@/redux/tasks/slice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { generateUniqueId } from "@/utils/generateUniqueId";
 
-interface FormProps {
-  onShow: (obj: TasksProps) => void;
-}
+// interface FormProps {
+//   onShow: (obj: TasksProps) => void;
+// }
 
-const Form: React.FC<FormProps> = ({ onShow }) => {
+const Form = () => {
   const dispatch = useAppDispatch();
+  const tasks = useAppSelector((state) => state.tasks.tasks);
   const [task, setTask] = React.useState<TasksProps>({
-    id: 0,
+    id: generateUniqueId(),
     text: "",
     isEdit: false,
     isChecked: false,
@@ -28,19 +30,25 @@ const Form: React.FC<FormProps> = ({ onShow }) => {
     setTask({ ...task, [name]: value, isEdit: false, isChecked: false });
   };
 
-  const handleClickAdd = () => {
-    setTask({ id: 0, text: "", isEdit: false, isChecked: false });
+  const handleClickAdd = React.useCallback(() => {
+    const newTask = {
+      id: generateUniqueId(),
+      text: task.text,
+      isChecked: task.isChecked,
+      isEdit: task.isEdit,
+    };
 
-    if (onShow) {
-      dispatch(addTask({
-        text: task.text,
-        isChecked: task.isChecked,
-        isEdit: task.isEdit,
-      }));
+    console.log('new', newTask)
 
-      onShow(task);
-    }
-  };
+    dispatch(addTask(newTask));
+
+    setTask({
+      id: generateUniqueId(),
+      text: "",
+      isEdit: false,
+      isChecked: false,
+    });
+  }, [dispatch, task]);
 
   return (
     <Card className={"mb-5"}>
