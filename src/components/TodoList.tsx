@@ -18,11 +18,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import Input from "@mui/material/Input";
 import Box from "@mui/material/Box";
-import { TasksProps } from "@/redux/tasks/types";
 
 const TodoList = () => {
   const dispatch = useAppDispatch();
-  const tasks = useAppSelector((state) => state.tasks.tasks);
+  const tasks = useAppSelector((state) => state.tasks);
+
+  const onDeleteTask = (idx: number) => {
+    dispatch(deleteTask(idx))
+  }
 
   return (
     <Card>
@@ -62,11 +65,9 @@ const TodoList = () => {
                             <EditIcon />
                           </IconButton>
                         )}
-                        <div>
-                          <IconButton edge="end" aria-label="delete">
+                          <IconButton edge="end" aria-label="delete" onClick={() => onDeleteTask(i)}>
                             <DeleteIcon />
                           </IconButton>
-                        </div>
                       </div>
                     }
                     disablePadding

@@ -8,16 +8,10 @@ import CardContent from "@mui/material/CardContent";
 import {Filter} from "../components/Filter";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import {TasksProps} from "@/redux/tasks/types";
 
 export default function HomePage() {
-    // const [mainList, setMainList] = React.useState<TasksProps[]>([]);
     const [filter, setFilter] = React.useState("all");
     const [theme, setTheme] = React.useState('light');
-
-    // const onShowTodo = (obj: TasksProps) => {
-    //     setMainList([...mainList, obj]);
-    // };
 
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');
