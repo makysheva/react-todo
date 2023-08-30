@@ -13,25 +13,32 @@ const tasksSlice = createSlice({
         isChecked: action.payload.isChecked,
       });
     },
-    deleteTask: (state, action) => {
-      state = state.filter((_, index) => index !== action.payload);
+    updateTodoText: (state, action) => {
+      const { id, text } = action.payload;
+      const todo = state.find((todo) => todo.id === id);
+      if (todo) {
+        todo.text = text;
+        todo.isEdit = false;
+      }
     },
-    updateTask: (state, action) => {
-      const { id, text, isEdit, isChecked } = action.payload;
-      state = state.map((task) => {
-        if (task.id === id) {
-          return {
-            ...task,
-            isEdit,
-            isChecked,
-            text,
-          };
-        }
-        return task;
-      });
+    toggleChecked: (state, action) => {
+      const { id } = action.payload;
+      const todo = state.find((todo) => todo.id === id);
+      if (todo) {
+        todo.isChecked = !todo.isChecked;
+      }
+    },
+    toggleEdit: (state, action) => {
+      const { id } = action.payload;
+      return state.map((todo) => todo.id === id ? { ...todo, isEdit: !todo.isEdit } : todo
+  );
+    },
+    deleteTodo: (state, action) => {
+      const { id } = action.payload;
+      return state.filter(todo => todo.id !== id);
     },
   },
 });
 
-export const { addTask, deleteTask, updateTask } = tasksSlice.actions;
+export const { addTask, updateTodoText, toggleChecked, toggleEdit, deleteTodo } = tasksSlice.actions;
 export default tasksSlice.reducer;

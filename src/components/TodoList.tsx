@@ -3,7 +3,6 @@
 import React from "react";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { deleteTask, updateTask } from "@/redux/tasks/slice";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import List from "@mui/material/List";
@@ -18,21 +17,58 @@ import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import Input from "@mui/material/Input";
 import Box from "@mui/material/Box";
+import {
+  deleteTodo,
+  toggleEdit,
+  toggleChecked,
+  updateTodoText,
+} from "@/redux/tasks/slice";
+
+type EditedTodoProps = {
+  todoId: number | null;
+  text: string;
+};
 
 const TodoList = () => {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector((state) => state.tasks);
+  const [editedTodo, setEditedTodo] = React.useState<EditedTodoProps>({
+    todoId: null,
+    text: "",
+  });
 
-  const onDeleteTask = (idx: number) => {
-    dispatch(deleteTask(idx))
-  }
+  const handleToggleEditIcon = React.useCallback(
+    (id: number) => {
+      dispatch(toggleEdit({ id }));
+    },
+    [dispatch]
+  );
+
+  const handleUpdateText = (id: number, text: string) => {
+    setEditedTodo({ todoId: id, text });
+  };
+
+  const handleSaveTodo = React.useCallback(
+    (id: number) => {
+      dispatch(updateTodoText({ id, text: editedTodo.text }));
+    },
+    [dispatch, editedTodo]
+  );
+
+  const handleCheckedTodo = (id: number) => {
+    dispatch(toggleChecked({ id }));
+  };
+
+  const handleDelete = (id: number) => {
+    dispatch(deleteTodo({ id }));
+  };
 
   return (
     <Card>
       <CardContent>
         <Box className={"flex flex-col items-center justify-between"}>
           {tasks.length ? (
-            tasks.map((item, i) => {
+            tasks.map(item => {
               return (
                 <List
                   key={item.id}
@@ -53,6 +89,7 @@ const TodoList = () => {
                             edge="end"
                             aria-label="edit"
                             className={"mr-2.5"}
+                            onClick={() => handleSaveTodo(item.id)}
                           >
                             <SaveIcon />
                           </IconButton>
@@ -61,29 +98,37 @@ const TodoList = () => {
                             edge="end"
                             aria-label="edit"
                             className={"mr-2.5"}
+                            onClick={() => handleToggleEditIcon(item.id)}
                           >
                             <EditIcon />
                           </IconButton>
                         )}
-                          <IconButton edge="end" aria-label="delete" onClick={() => onDeleteTask(i)}>
-                            <DeleteIcon />
-                          </IconButton>
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
                       </div>
                     }
                     disablePadding
                   >
                     <ListItemButton role={undefined} dense>
                       <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          tabIndex={-1}
-                          disableRipple
-                        />
+                        <Checkbox  onClick={() => handleCheckedTodo(item.id)} edge="start" tabIndex={-1} disableRipple />
                       </ListItemIcon>
                       {item.isEdit ? (
                         <Input
                           autoFocus
-                          value={item.isEdit ? item.text : item.text}
+                          value={
+                            item.id === editedTodo.todoId
+                              ? editedTodo.text
+                              : item.text
+                          }
+                          onChange={(e) =>
+                            handleUpdateText(item.id, e.target.value)
+                          }
                         ></Input>
                       ) : (
                         <ListItemText>
@@ -92,7 +137,7 @@ const TodoList = () => {
                               item.isChecked ? "line-through" : " "
                             } whitespace-pre-wrap`}
                           >
-                            {item.isEdit ? item.text : item.text}
+                            {item.text}
                           </div>
                         </ListItemText>
                       )}
