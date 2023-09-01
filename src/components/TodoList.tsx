@@ -55,12 +55,15 @@ const TodoList = () => {
     [dispatch, editedTodo]
   );
 
-  const handleCheckedTodo = (id: number) => {
+  const handleCheckedTodo = React.useCallback((id: number) => {
     dispatch(toggleChecked({ id }));
-  };
+  }, [dispatch]);
 
   const handleDelete = (id: number) => {
-    dispatch(deleteTodo({ id }));
+    const deletedTodo = tasks.filter(todo => todo.id !== id);
+    if (deletedTodo) {
+      dispatch(deleteTodo({ id }));
+    }
   };
 
   return (
@@ -116,7 +119,9 @@ const TodoList = () => {
                   >
                     <ListItemButton role={undefined} dense>
                       <ListItemIcon>
-                        <Checkbox  onClick={() => handleCheckedTodo(item.id)} edge="start" tabIndex={-1} disableRipple />
+                        <Checkbox 
+                        checked={item.isChecked}
+                        onClick={() => handleCheckedTodo(item.id)} edge="start" tabIndex={-1} disableRipple />
                       </ListItemIcon>
                       {item.isEdit ? (
                         <Input

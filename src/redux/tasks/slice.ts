@@ -30,15 +30,22 @@ const tasksSlice = createSlice({
     },
     toggleEdit: (state, action) => {
       const { id } = action.payload;
-      return state.map((todo) => todo.id === id ? { ...todo, isEdit: !todo.isEdit } : todo
-  );
+      return state.map((todo) =>
+        todo.id === id ? { ...todo, isEdit: !todo.isEdit } : todo
+      );
     },
     deleteTodo: (state, action) => {
       const { id } = action.payload;
-      return state.filter(todo => todo.id !== id);
+      return state.filter((todo) => todo.id !== id);
     },
   },
 });
 
-export const { addTask, updateTodoText, toggleChecked, toggleEdit, deleteTodo } = tasksSlice.actions;
+export const {
+  addTask,
+  updateTodoText,
+  toggleChecked,
+  toggleEdit,
+  deleteTodo,
+} = tasksSlice.actions;
 export default tasksSlice.reducer;

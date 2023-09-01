@@ -1,11 +1,39 @@
-import { configureStore } from "@reduxjs/toolkit";
-import tasksReducer from './tasks/slice';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import tasksReducer from "./tasks/slice";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-export const store = configureStore({
-    reducer: {
-        tasks: tasksReducer,
-    }
-})
+const rootReducer = combineReducers({
+  tasks: tasksReducer,
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export const persistor = persistStore(store);
+export default store;
