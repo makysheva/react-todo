@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { TasksProps } from "@/redux/tasks/types";
 import { addTask } from "@/redux/tasks/slice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { generateUniqueId } from "@/utils/generateUniqueId";
 
 const Form = () => {
@@ -61,15 +61,16 @@ const Form = () => {
             placeholder="Введите задачу"
             className={"w-full"}
           />
-
-          <Button
-            variant="contained"
-            disabled={task.text.length === 0}
-            className={"w-full visible bg-blue-500 mt-6 hover:bg-sky-700"}
-            onClick={handleClickAdd}
-          >
-            Добавить
-          </Button>
+          <div className={"w-full my-2.5"}>
+            <Button
+              variant="contained"
+              disabled={task.text.length === 0}
+              className={"w-full visible bg-blue-500 mt-6 hover:bg-sky-700"}
+              onClick={handleClickAdd}
+            >
+              Добавить
+            </Button>
+          </div>
         </Box>
       </CardContent>
     </Card>
