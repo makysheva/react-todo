@@ -17,7 +17,7 @@ export default function HomePage() {
     };
 
     return (
-        <Card className={`max-w-xl w-full ${theme === "light" ? "bg-white text-black" : "bg-sky-900 text-white"}`}>
+        <Card className={`${theme === "light" ? "!bg-white !text-black" : "!bg-sky-900 !text-white"} max-w-xl w-full`}>
             <CardContent>
                 <div className={"p-2.5"}>
                     <div className={"flex flex-row items-center justify-between mb-5"}>

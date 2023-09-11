@@ -65,7 +65,7 @@ const Form = () => {
             <Button
               variant="contained"
               disabled={task.text.length === 0}
-              className={"w-full visible bg-blue-500 mt-6 hover:bg-sky-700"}
+              className={"w-full visible mt-6 hover:bg-sky-700"}
               onClick={handleClickAdd}
             >
               Добавить
