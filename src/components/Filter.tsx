@@ -3,15 +3,15 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { filterNames } from "@/constants/filterNames";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setFilter } from "../redux/tasks/filterSlice";
 
-interface FilterProps {
-  filter: string;
-  setFilter: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
+export const Filter= () => {
+  const filter = useAppSelector((state) => state.filter);
+  const dispatch = useAppDispatch();
+  
   const handleFilterChange = (filterType: string) => {
-    setFilter(filterType);
+    dispatch(setFilter(filterType));
   };
 
   return (

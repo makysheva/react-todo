@@ -32,9 +32,21 @@ type EditedTodoProps = {
 const TodoList = () => {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector((state) => state.tasks);
+  const filter = useAppSelector((state) => state.filter);
   const [editedTodo, setEditedTodo] = React.useState<EditedTodoProps>({
     todoId: null,
     text: "",
+  });
+
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === 'all') {
+      return true; // Отобразить все задачи
+    } else if (filter === 'completed') {
+      return task.isChecked; // Отобразить только выполненные задачи
+    } else if (filter === 'uncompleted') {
+      return !task.isChecked; // Отобразить только невыполненные задачи
+    }
+    return true; // По умолчанию отобразить все задачи
   });
 
   const handleToggleEditIcon = React.useCallback(
@@ -70,8 +82,8 @@ const TodoList = () => {
     <Card>
       <CardContent>
         <Box className={"flex flex-col items-center justify-between"}>
-          {tasks.length ? (
-            tasks.map(item => {
+          {filteredTasks.length ? (
+            filteredTasks.map(item => {
               return (
                 <List
                   key={item.id}

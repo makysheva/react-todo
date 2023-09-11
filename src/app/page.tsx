@@ -10,7 +10,6 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
 export default function HomePage() {
-    const [filter, setFilter] = React.useState("all");
     const [theme, setTheme] = React.useState('light');
 
     const toggleTheme = () => {
@@ -32,7 +31,7 @@ export default function HomePage() {
                 <div className={"m-2 p-2.5"}>
                     <h2 className={"mb-5"}>Задачи</h2>
                     <div className={"flex flex-row justify-between items-center mb-2"}>
-                        <Filter filter={filter} setFilter={setFilter}/>
+                        <Filter />
                     </div>
 
                     <TodoList />

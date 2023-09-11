@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import tasksReducer from "./tasks/slice";
+import filterReducer from "./tasks/filterSlice";
 import {
   persistStore,
   persistReducer,
@@ -14,6 +15,7 @@ import storage from "redux-persist/lib/storage";
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
+  filter: filterReducer,
 });
 
 const persistConfig = {
